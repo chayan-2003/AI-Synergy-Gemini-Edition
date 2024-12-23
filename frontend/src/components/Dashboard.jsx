@@ -26,7 +26,7 @@ const Dashboard = () => {
 
                 const response = await axios({
                     method: 'get',
-                    url: 'http://localhost:8090/api/users/profile',
+                    url: `${import.meta.env.VITE_API_URL}/api/users/profile`,
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',

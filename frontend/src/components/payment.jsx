@@ -40,7 +40,7 @@ const CheckoutForm = ({ plan }) => {
     try {
       const { data } = await axios.post(
 
-        'http://localhost:8090/api/users/payment-intent',
+        `${import.meta.env.VITE_API_URL}api/users/payment-intent`,
         {
           amount: plan === 'basic' ? 2900 : plan === 'pro' ? 5900 : 9900, // Convert dollars to cents
           plan,

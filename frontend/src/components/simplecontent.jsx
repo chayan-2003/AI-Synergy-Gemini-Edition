@@ -16,7 +16,7 @@ const SimpleContent = () => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8090/api/users/profile', {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/users/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ const SimpleContent = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:8090/api/users/gemini',
+        `${import.meta.env.VITE_API_URL}/api/users/gemini`,
         { heading, tone },
         {
           headers: {

@@ -27,7 +27,7 @@ const Navbar = () => {
         e.preventDefault();
         try {
             const response = await axios.post(
-                'http://localhost:8090/api/users/logout');
+                `${import.meta.env.VITE_API_URL}/api/users/logout`);
             console.log('Details sent to server');
             navigate('/login');
         } catch (error) {

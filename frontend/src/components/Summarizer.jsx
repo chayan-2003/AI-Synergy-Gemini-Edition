@@ -38,7 +38,7 @@ const Summarizer = () => {
     setError('');
     try {
       const response = await axios.post(
-        'http://localhost:8090/api/users/summarize',
+        `${import.meta.env.VITE_API_URL}/api/users/summarize`,
         {
           prompt: text,
           words,
