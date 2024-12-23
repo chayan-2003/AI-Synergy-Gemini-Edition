@@ -7,7 +7,6 @@ import {
 import { AccountCircle, Assessment, Timeline, Description } from '@mui/icons-material';
 import axios from 'axios';
 import Navbar from './navbar';
-//import './dashboard.css'; // Import for 3D spinner & transitions
 
 const Dashboard = () => {
     const [profile, setProfile] = useState(null);
@@ -18,29 +17,18 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    navigate('/login');
-                    return;
-                }
-
+                // Automatically includes HttpOnly cookies
                 const response = await axios({
                     method: 'get',
                     url: `${import.meta.env.VITE_API_URL}/api/users/profile`,
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    withCredentials: true
+                    withCredentials: true, // Include cookies in requests
                 });
 
                 setProfile(response.data);
             } catch (err) {
                 console.error('Error:', err);
                 if (err.response?.status === 401) {
-                    localStorage.removeItem('token');
-                    navigate('/login');
+                    navigate('/login'); // Redirect to login if unauthorized
                 }
                 setError('Failed to fetch profile');
             } finally {
@@ -53,8 +41,8 @@ const Dashboard = () => {
 
     if (loading) {
         return (
-            <Box className="spinner-container">
-                <div className="spinner-3d" />
+            <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+                <CircularProgress />
                 <Typography mt={2}>Loading Dashboard...</Typography>
             </Box>
         );
@@ -73,7 +61,6 @@ const Dashboard = () => {
             <Navbar />
             <Grow in={!loading} timeout={600}>
                 <Box
-                    className="dashboard-content"
                     sx={{
                         minHeight: '100vh',
                         backgroundColor: '#f5f5f5',
@@ -130,49 +117,6 @@ const Dashboard = () => {
                                             Member since: {new Date(profile?.createdAt).toLocaleDateString()}
                                         </Typography>
                                     </Box>
-                                </Paper>
-                            </Grid>
-
-                            {/* Usage Statistics */}
-                            <Grid item xs={12}>
-                                <Paper elevation={3} sx={{ p: 3 }}>
-                                    <Typography variant="h6" gutterBottom>
-                                        Usage Statistics
-                                    </Typography>
-                                    <Grid container spacing={3}>
-                                        {[
-                                            { icon: Description, label: 'Documents Created', value: profile?.stats?.documents || 0 },
-                                            { icon: Assessment, label: 'Words Generated', value: profile?.stats?.words || 0 },
-                                            { icon: Timeline, label: 'Usage Time (hrs)', value: profile?.stats?.hours || 0 }
-                                        ].map((stat, index) => (
-                                            <Grid item xs={12} md={4} key={index}>
-                                                <Box textAlign="center">
-                                                    <stat.icon sx={{ fontSize: 40, color: 'primary.main', mb: 1 }} />
-                                                    <Typography variant="h4">{stat.value}</Typography>
-                                                    <Typography color="textSecondary">{stat.label}</Typography>
-                                                </Box>
-                                            </Grid>
-                                        ))}
-                                    </Grid>
-                                </Paper>
-                            </Grid>
-
-                            {/* Recent Activity */}
-                            <Grid item xs={12}>
-                                <Paper elevation={3} sx={{ p: 3 }}>
-                                    <Typography variant="h6" gutterBottom>
-                                        Recent Activity
-                                    </Typography>
-                                    <List>
-                                        {(profile?.recentActivity || []).map((activity, index) => (
-                                            <ListItem key={index}>
-                                                <ListItemText
-                                                    primary={activity.action}
-                                                    secondary={new Date(activity.timestamp).toLocaleString()}
-                                                />
-                                            </ListItem>
-                                        ))}
-                                    </List>
                                 </Paper>
                             </Grid>
                         </Grid>
