@@ -5,12 +5,15 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 
-
 dotenv.config();
 const app = express();
+
 // CORS Configuration
 const corsOptions = {
-    origin: ['http://localhost:5175'],
+    origin: [
+        'http://localhost:5175', // Local development
+        'https://ai-synergy-gemini-edition-99.onrender.com' // Deployed frontend on Render
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: [
@@ -34,16 +37,13 @@ app.use((err, req, res, next) => {
     } else {
         next(err);
     }
-})
+});
 
 connectDB();
 
-
-app.use(express.json());//parse incoming json data 
-app.use(cookieParser());//parse incoming cookies
+app.use(express.json()); // Parse incoming JSON data
+app.use(cookieParser()); // Parse incoming cookies
 app.use('/api/users', userRouter);
-
-
 
 const port = process.env.PORT || 8090;
 app.listen(port, () => {
