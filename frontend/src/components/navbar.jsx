@@ -119,7 +119,7 @@ const Navbar = () => {
                             textDecoration: 'none',
                         }}
                     >
-                        BrandName
+                    MIND-MESH 
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         <Button

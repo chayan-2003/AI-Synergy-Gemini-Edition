@@ -1,5 +1,13 @@
 {
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend for AI Content Generator",
+  "main": "src/server.js",
   "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
     "bcrypt": "^5.1.1",
@@ -11,10 +19,9 @@
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.1",
-    "node": "^23.4.0",
-    "nodemon": "^3.1.9",
-    "require": "^2.4.20",
-    "Router": "^2.1.0",
     "stripe": "^17.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
   }
 }
