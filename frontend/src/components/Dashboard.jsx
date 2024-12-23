@@ -21,7 +21,11 @@ const Dashboard = () => {
                 const response = await axios({
                     method: 'get',
                     url: `${import.meta.env.VITE_API_URL}/api/users/profile`,
-                    withCredentials: true, // Include cookies in requests
+                    withCredentials: true, 
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json',
+                    },// Include cookies in requests
                 });
 
                 setProfile(response.data);
