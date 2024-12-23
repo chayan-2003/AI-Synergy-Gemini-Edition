@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Box, Container, Typography, TextField, Button, Paper } from '@mui/material';
-import Navbar from './Navbar';
+import Navbar from './navbar';
 
 const Correct = () => {
   const [text, setText] = useState('');
