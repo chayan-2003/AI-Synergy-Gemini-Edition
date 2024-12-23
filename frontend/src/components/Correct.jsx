@@ -40,7 +40,7 @@ const Correct = () => {
     setError('');
     try {
       const response = await axios.post(
-        'http://localhost:8090/api/users/grammarly',
+       ` ${import.meta.env.VITE_API_URL}/api/users/grammarly`,
         {
           prompt: text,
         },
