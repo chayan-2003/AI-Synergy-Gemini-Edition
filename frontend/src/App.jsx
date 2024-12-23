@@ -9,7 +9,7 @@ import Pricing from './components/pricing';
 import SimpleContent from './components/simplecontent';
 import Payment from './components/payment';
 import { PlanProvider } from './context/PlanContext';
-import Summarizer from './components/summarizer';
+import Summarizer from './components/Summarizer';
 import Correct from './components/Correct';
 
 
