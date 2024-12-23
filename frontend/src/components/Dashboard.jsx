@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import { AccountCircle, Assessment, Timeline, Description } from '@mui/icons-material';
 import axios from 'axios';
-import Navbar from './Navbar';
+import Navbar from './navbar';
 //import './dashboard.css'; // Import for 3D spinner & transitions
 
 const Dashboard = () => {
