@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Register from './components/register';
 import Login from './components/login';
-import Navbar from './components/Navbar.jsx';
+import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Dashboard from './components/Dashboard';
 import Pricing from './components/pricing';
