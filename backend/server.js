@@ -1,16 +1,17 @@
 import express from 'express';
+import path from 'path';
 import userRouter from './routes/userRouter.js';
 import connectDB from './utils/connectdb.js';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 
-
 dotenv.config();
 const app = express();
+
 // CORS Configuration
 const corsOptions = {
-    origin: ['http://localhost:5175'],
+    origin: process.env.NODE_ENV === 'production' ? 'https://your-frontend-domain.com' : 'http://localhost:5175',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: [
@@ -34,15 +35,15 @@ app.use((err, req, res, next) => {
     } else {
         next(err);
     }
-})
+});
 
 connectDB();
 
-
-app.use(express.json());//parse incoming json data 
-app.use(cookieParser());//parse incoming cookies
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+app.use(express.json()); // Parse incoming JSON data
+app.use(cookieParser()); // Parse incoming cookies
 app.use('/api/users', userRouter);
-
 
 
 const port = process.env.PORT || 8090;
