@@ -17,7 +17,7 @@ const Summarizer = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get('http://localhost:8090/api/users/profile', {
+        const response = await axios.get( `${API_URL}/api/users/profile`, {
           withCredentials: true,
         });
         setRemainingCredits(response.data.credits);
@@ -36,7 +36,7 @@ const Summarizer = () => {
     setError('');
     try {
       const response = await axios.post(
-        'http://localhost:8090/api/users/summarize',
+        `${API_URL}/api/users/summarize`,
         {
           prompt: text,
           words,

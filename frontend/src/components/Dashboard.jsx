@@ -7,7 +7,7 @@ import {
 import { AccountCircle, Assessment, Timeline, Description } from '@mui/icons-material';
 import axios from 'axios';
 import Navbar from './Navbar';
-
+const API_URL = import.meta.env.PROD ? import.meta.env.VITE_API_URL_PROD : import.meta.env.VITE_API_URL_DEV;
 const Dashboard = () => {
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -19,7 +19,7 @@ const Dashboard = () => {
             try {
                 const response = await axios({
                     method: 'get',
-                    url: 'http://localhost:8090/api/users/profile',
+                    url: `${API_URL}/api/users/profile`,
                     withCredentials: true // Include cookies in the request
                 });
 

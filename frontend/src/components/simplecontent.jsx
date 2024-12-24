@@ -14,11 +14,11 @@ const SimpleContent = () => {
   const [remainingCredits, setRemainingCredits] = useState(0);
 
   const { isAuthenticated } = useContext(AuthContext);
-
+  const API_URL = import.meta.env.PROD ? import.meta.env.VITE_API_URL_PROD : import.meta.env.VITE_API_URL_DEV;
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get('http://localhost:8090/api/users/profile', {
+        const response = await axios.get( `${API_URL}/api/users/profile`, {
           withCredentials: true,
         });
         setRemainingCredits(response.data.credits);
@@ -41,7 +41,7 @@ const SimpleContent = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:8090/api/users/gemini',
+            `${API_URL}/api/users/gemini`,
         { heading, tone },
         {
           withCredentials: true,

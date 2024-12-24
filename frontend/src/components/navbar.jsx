@@ -25,11 +25,11 @@ const Navbar = () => {
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
-
+    const API_URL = import.meta.env.PROD ? import.meta.env.VITE_API_URL_PROD : import.meta.env.VITE_API_URL_DEV;
     const handleLogout = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:8090/api/users/logout', {}, { withCredentials: true });
+            await axios.post( `${API_URL}/api/users/logout`, {}, { withCredentials: true });
             console.log('Details sent to server');
             navigate('/login'); // Redirect to login page
             logout(); // Update auth state

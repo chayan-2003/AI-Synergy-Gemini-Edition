@@ -8,12 +8,12 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false); // Authentication state
   const [loading, setLoading] = useState(true); // Loading state for auth check
-
+  const API_URL = import.meta.env.PROD ? import.meta.env.VITE_API_URL_PROD : import.meta.env.VITE_API_URL_DEV;
   // Check authentication status
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const response = await axios.get(' http://localhost:8090/api/users/auth/check', {
+        const response = await axios.get( `${API_URL}/api/users/auth/check`, {
           withCredentials: true, // Include cookies in the request
         });
         if (response.status === 200) {

@@ -8,12 +8,13 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate(); // Initialize navigate
   const { setIsAuthenticated } = useContext(AuthContext); // Get setIsAuthenticated from AuthContext
+  const API_URL = import.meta.env.PROD ? import.meta.env.VITE_API_URL_PROD : import.meta.env.VITE_API_URL_DEV;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'http://localhost:8090/api/users/login',
+        `${API_URL}/api/users/login`,
         { email, password },
         { withCredentials: true } // Include cookies in the request
       );

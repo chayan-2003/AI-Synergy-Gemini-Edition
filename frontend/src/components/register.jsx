@@ -10,12 +10,13 @@ const Register = () => {
     const [registered, setRegistered] = useState(false);
 
     const navigate = useNavigate(); // Initialize navigate
+    const API_URL = import.meta.env.PROD ? import.meta.env.VITE_API_URL_PROD : import.meta.env.VITE_API_URL_DEV;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post(
-                'http://localhost:8090/api/users/register',
+               `${API_URL}/api/users/register`,
                 { username, email, password },
                 { withCredentials: true }
             );
