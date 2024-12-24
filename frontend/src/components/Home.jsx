@@ -11,7 +11,7 @@ const Home = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useContext(AuthContext);
   const [userName, setUserName] = useState('');
-
+  const API_URL = import.meta.env.PROD ? import.meta.env.VITE_API_URL_PROD : import.meta.env.VITE_API_URL_DEV;
   useEffect(() => {
     const fetchProfile = async () => {
       try {
