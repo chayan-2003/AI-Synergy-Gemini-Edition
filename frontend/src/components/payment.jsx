@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { PlanContext } from '../context/PlanContext';
 import { loadStripe } from '@stripe/stripe-js';
-import Navbar from './navbar';
+import Navbar from './Navbar';
 import {
   Elements,
   CardNumberElement,

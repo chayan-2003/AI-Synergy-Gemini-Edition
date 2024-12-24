@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { Box, Container, Typography, TextField, Button, Paper } from '@mui/material';
-import Navbar from './navbar';
+import Navbar from './Navbar';
 import { AuthContext } from '../authContext/authContext';
 
 const Correct = () => {
