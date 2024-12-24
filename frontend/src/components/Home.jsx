@@ -1,12 +1,34 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Box, Container, Typography, Button, Grid } from '@mui/material';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import Navbar from './navbar';
+import Navbar from './Navbar';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { AuthContext } from '../authContext/authContext';
 
 const Home = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useContext(AuthContext);
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await axios.get('http://localhost:8090/api/users/profile', {
+          withCredentials: true,
+        });
+        setUserName(response.data.first_name);
+      } catch (err) {
+        console.error('Failed to fetch profile:', err);
+      }
+    };
+
+    if (isAuthenticated) {
+      fetchProfile();
+    }
+  }, [isAuthenticated]);
+
   return (
     <>
       <Navbar />
@@ -20,7 +42,7 @@ const Home = () => {
             style={{ position: 'absolute', top: '150px', right: '2px', left: '3px', transform: 'translate(-50%, -50%)' }}
           >
             <Typography variant="h2" component="h1" className="font-bold mb-100 text-white">
-              Welcome to AI Writing Services
+              {isAuthenticated ? `Welcome to AI Writing Services, ${userName}` : 'Welcome to AI Writing Services'}
             </Typography>
             <Typography variant="h5" component="p" className="text-white" margin="20px">
               Discover our advanced all-in-one AI solution designed to optimize your writing process.

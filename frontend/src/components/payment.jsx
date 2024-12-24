@@ -39,8 +39,7 @@ const CheckoutForm = ({ plan }) => {
 
     try {
       const { data } = await axios.post(
-
-        `${import.meta.env.VITE_API_URL}api/users/payment-intent`,
+        'http://localhost:8090/api/users/payment',
         {
           amount: plan === 'basic' ? 2900 : plan === 'pro' ? 5900 : 9900, // Convert dollars to cents
           plan,
@@ -61,8 +60,20 @@ const CheckoutForm = ({ plan }) => {
         },
       });
 
-      if (result.error) setError(result.error.message);
-      else if (result.paymentIntent?.status === 'succeeded') setSuccess(true);
+      if (result.error) {
+        setError(result.error.message);
+      } else if (result.paymentIntent?.status === 'succeeded') {
+        setSuccess(true);
+        // Update the user's plan on the server
+        await axios.post(
+          'http://localhost:8090/api/users/updatePlan',
+          { plan },
+          {
+            withCredentials: true,
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
+      }
     } catch (err) {
       setError(err.response?.data?.error || 'Payment failed.');
     } finally {
@@ -79,59 +90,58 @@ const CheckoutForm = ({ plan }) => {
 
   return (
     <>
-    <Navbar />
-    <form onSubmit={handleSubmit} className="max-w-3xl w-full mx-auto bg-white p-8 md:p-12 mt-10 rounded-lg shadow space-y-8">
-      <Typography variant="h4" className="text-center mb-6">Payment for {plan.charAt(0).toUpperCase() + plan.slice(1)} Plan</Typography>
-      <TextField
-        label="Full Name"
-        variant="outlined"
-        fullWidth
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
-      <TextField
-        label="Email"
-        variant="outlined"
-        fullWidth
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <div className="bg-gray-50 p-4 rounded border space-y-4">
-        <div>
-          <label className="block text-lg mb-2">Card Number</label>
-          <div className="p-3 rounded border bg-white">
-            <CardNumberElement options={elementStyle} />
-          </div>
-        </div>
-        <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
-          <div className="w-full">
-            <label className="block text-lg mb-2">Expiry Date</label>
+      <form onSubmit={handleSubmit} className="max-w-3xl w-full mx-auto bg-white p-8 md:p-12 mt-10 rounded-lg shadow space-y-8">
+        <Typography variant="h4" className="text-center mb-6">Payment for {plan.charAt(0).toUpperCase() + plan.slice(1)} Plan</Typography>
+        <TextField
+          label="Full Name"
+          variant="outlined"
+          fullWidth
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <TextField
+          label="Email"
+          variant="outlined"
+          fullWidth
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <div className="bg-gray-50 p-4 rounded border space-y-4">
+          <div>
+            <label className="block text-lg mb-2">Card Number</label>
             <div className="p-3 rounded border bg-white">
-              <CardExpiryElement options={elementStyle} />
+              <CardNumberElement options={elementStyle} />
             </div>
           </div>
-          <div className="w-full">
-            <label className="block text-lg mb-2">CVC</label>
-            <div className="p-3 rounded border bg-white">
-              <CardCvcElement options={elementStyle} />
+          <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+            <div className="w-full">
+              <label className="block text-lg mb-2">Expiry Date</label>
+              <div className="p-3 rounded border bg-white">
+                <CardExpiryElement options={elementStyle} />
+              </div>
+            </div>
+            <div className="w-full">
+              <label className="block text-lg mb-2">CVC</label>
+              <div className="p-3 rounded border bg-white">
+                <CardCvcElement options={elementStyle} />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        fullWidth
-        disabled={!stripe || loading}
-      >
-        {loading ? 'Processing...' : 'Pay Now'}
-      </Button>
-      {error && <Typography color="error" className="mt-4 text-center">{error}</Typography>}
-      {success && <Typography color="primary" className="mt-4 text-center">Payment successful! Credits updated.</Typography>}
-    </form>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+          disabled={!stripe || loading}
+        >
+          {loading ? 'Processing...' : 'Pay Now'}
+        </Button>
+        {error && <Typography color="error" className="mt-4 text-center">{error}</Typography>}
+        {success && <Typography color="primary" className="mt-4 text-center">Payment successful! Credits updated.</Typography>}
+      </form>
     </>
   );
 };
@@ -140,16 +150,18 @@ function Payment() {
   const { plan } = useContext(PlanContext);
 
   return (
-    <Box className="bg-gray-100 min-h-screen py-16">
-      <Container maxWidth="sm">
-        <Paper elevation={3} className="p-6">
-          <Elements stripe={stripePromise}>
-            <CheckoutForm plan={plan} />
-          </Elements>
-        </Paper>
-      </Container>
-    </Box>
-    
+    <>
+      <Navbar />
+      <Box className="bg-gray-100 min-h-screen py-16">
+        <Container maxWidth="sm">
+          <Paper elevation={3} className="p-6">
+            <Elements stripe={stripePromise}>
+              <CheckoutForm plan={plan} />
+            </Elements>
+          </Paper>
+        </Container>
+      </Box>
+    </>
   );
 }
 

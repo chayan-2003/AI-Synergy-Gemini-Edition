@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { Box, Container, Typography, TextField, Button, Paper } from '@mui/material';
-import Navbar from './navbar';
+import Navbar from './Navbar';
+import { AuthContext } from '../authContext/authContext';
 
 const Summarizer = () => {
   const [text, setText] = useState('');
@@ -11,17 +12,12 @@ const Summarizer = () => {
   const [error, setError] = useState('');
   const [remainingCredits, setRemainingCredits] = useState(0);
 
-  const token = localStorage.getItem('token');
+  const { isAuthenticated } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/users/profile`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
+        const response = await axios.get('http://localhost:8090/api/users/profile', {
           withCredentials: true,
         });
         setRemainingCredits(response.data.credits);
@@ -30,25 +26,22 @@ const Summarizer = () => {
       }
     };
 
-    fetchProfile();
-  }, [token]);
+    if (isAuthenticated) {
+      fetchProfile();
+    }
+  }, [isAuthenticated]);
 
   const handleSummarize = async () => {
     setLoading(true);
     setError('');
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/users/summarize`,
+        'http://localhost:8090/api/users/summarize',
         {
           prompt: text,
           words,
         },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
           withCredentials: true,
         }
       );
@@ -96,7 +89,7 @@ const Summarizer = () => {
               variant="contained"
               color="primary"
               onClick={handleSummarize}
-              disabled={loading}
+              disabled={loading || remainingCredits <= 0} // Disable if no credits left
               className="w-full"
             >
               {loading ? 'Summarizing...' : 'Summarize Text'}

@@ -27,11 +27,7 @@ const UserSchema = new mongoose.Schema({
         default: 'basic',
         required: true,
     },
-    credits_used:
-    {
-        type: Number,
-        required: false
-    }
+  
 });
 
 const User = mongoose.model('User', UserSchema);

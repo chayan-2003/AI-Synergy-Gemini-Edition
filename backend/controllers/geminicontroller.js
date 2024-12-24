@@ -20,7 +20,7 @@ const geminiController = async (req, res) => {
             return res.status(403).json({ error: 'Not enough credits' });
         }
         user.credits -= 1;
-        user.credits_used += 1;
+       // user.credits_used += 1;
         await user.save();
 
         // 3. Generate content
@@ -58,7 +58,7 @@ const summarizeController = async (req, res) => {
             return res.status(403).json({ error: 'Not enough credits' });
         }
         user.credits -= 1;
-        user.credits_used += 1;
+      //  user.credits_used += 1;
         await user.save();
 
         // 3. Generate summary
@@ -95,7 +95,7 @@ const grammarlyController = async (req, res) => {
             return res.status(403).json({ error: 'Not enough credits' });
         }
         user.credits -= 1;
-        user.credits_used += 1;
+        //user.credits_used += 1;
         await user.save();
 
         // 3. Fix grammatical errors

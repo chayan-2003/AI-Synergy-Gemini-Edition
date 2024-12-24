@@ -6,6 +6,7 @@ import { checkAuthStatus } from '../controllers/userController.js';
 import isAuthenticated from '../middleware/isAuthenticated.js';
 import paymentController from '../controllers/paymentController.js';
 import { grammarlyController } from '../controllers/geminicontroller.js';
+import updatePlan from '../controllers/planController.js';
 
 const userRouter = express.Router();
 
@@ -19,6 +20,7 @@ userRouter.post('/gemini',isauthenticated, geminiController);
 userRouter.post('/grammarly',isauthenticated, grammarlyController);
 
 userRouter.get('/auth/check', isAuthenticated, checkAuthStatus);
+userRouter.post('/updateplan',isauthenticated,updatePlan);
 
 
 export default userRouter;

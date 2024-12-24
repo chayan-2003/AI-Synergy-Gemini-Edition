@@ -3,7 +3,7 @@ import { Box, Container, Typography, Paper, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { PlanContext } from '../context/PlanContext';
 import { motion } from 'framer-motion';
-import Navbar from './navbar';
+import Navbar from './Navbar';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const plans = [

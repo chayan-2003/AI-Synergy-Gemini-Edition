@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,32 +11,32 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../authContext/authContext';
 
 const Navbar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
+    const navigate = useNavigate();
+    const { isAuthenticated, logout } = useContext(AuthContext);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
-    const  navigate=useNavigate();
+
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
-    const clicked = async (e) => {
+
+    const handleLogout = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(
-                `${import.meta.env.VITE_API_URL}/api/users/logout`);
+            await axios.post('http://localhost:8090/api/users/logout', {}, { withCredentials: true });
             console.log('Details sent to server');
-            navigate('/login');
+            navigate('/login'); // Redirect to login page
+            logout(); // Update auth state
         } catch (error) {
-            console.error(error);
-          
+            console.error('Error logging out:', error);
         }
-
-
-    }
+    };
 
     return (
         <AppBar position="static">
@@ -57,7 +57,7 @@ const Navbar = () => {
                             textDecoration: 'none',
                         }}
                     >
-                        BrandName
+                        InspireText
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -93,14 +93,20 @@ const Navbar = () => {
                                 <Typography textAlign="center">Home</Typography>
                             </MenuItem>
                             <MenuItem onClick={handleCloseNavMenu} component={Link} to="/dashboard">
-                                <Typography textAlign="center">User Dashboard</Typography>
+                                <Typography textAlign="center">Dashboard</Typography>
                             </MenuItem>
                             <MenuItem onClick={handleCloseNavMenu} component={Link} to="/pricing">
                                 <Typography textAlign="center">Pricing</Typography>
                             </MenuItem>
-                            <MenuItem onClick={handleCloseNavMenu} component={Link} to="/logout">
-                                <Typography textAlign="center">Logout</Typography>
-                            </MenuItem>
+                            {isAuthenticated ? (
+                                <MenuItem onClick={handleLogout}>
+                                    <Typography textAlign="center">Logout</Typography>
+                                </MenuItem>
+                            ) : (
+                                <MenuItem onClick={handleCloseNavMenu} component={Link} to="/login">
+                                    <Typography textAlign="center">Login</Typography>
+                                </MenuItem>
+                            )}
                         </Menu>
                     </Box>
                     <Typography
@@ -119,7 +125,7 @@ const Navbar = () => {
                             textDecoration: 'none',
                         }}
                     >
-                    MIND-MESH 
+                        InspireText
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         <Button
@@ -136,7 +142,7 @@ const Navbar = () => {
                             onClick={handleCloseNavMenu}
                             sx={{ my: 2, color: 'white', display: 'block' }}
                         >
-                            User Dashboard
+                            Dashboard
                         </Button>
                         <Button
                             component={Link}
@@ -149,13 +155,22 @@ const Navbar = () => {
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
-                        <Button
-                            component={Link}
-                            to="/logout" onClick={clicked}
-                            sx={{ my: 2, color: 'white', display: 'block' }}
-                        >
-                            Logout
-                        </Button>
+                        {isAuthenticated ? (
+                            <Button
+                                onClick={handleLogout}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Logout
+                            </Button>
+                        ) : (
+                            <Button
+                                component={Link}
+                                to="/login"
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Login
+                            </Button>
+                        )}
                     </Box>
                 </Toolbar>
             </Container>

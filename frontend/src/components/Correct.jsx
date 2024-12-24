@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { Box, Container, Typography, TextField, Button, Paper } from '@mui/material';
 import Navbar from './navbar';
+import { AuthContext } from '../authContext/authContext';
 
 const Correct = () => {
   const [text, setText] = useState('');
@@ -10,17 +11,12 @@ const Correct = () => {
   const [error, setError] = useState('');
   const [credits, setCredits] = useState({ used: 0, remaining: 0 });
 
-  const token = localStorage.getItem('token');
+  const { isAuthenticated } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/users/profile`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
+        const response = await axios.get('http://localhost:8090/api/users/profile', {
           withCredentials: true,
         });
         setCredits({
@@ -32,24 +28,21 @@ const Correct = () => {
       }
     };
 
-    fetchProfile();
-  }, [token]);
+    if (isAuthenticated) {
+      fetchProfile();
+    }
+  }, [isAuthenticated]);
 
   const handleCorrect = async () => {
     setLoading(true);
     setError('');
     try {
       const response = await axios.post(
-       ` ${import.meta.env.VITE_API_URL}/api/users/grammarly`,
+        'http://localhost:8090/api/users/grammarly',
         {
           prompt: text,
         },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
           withCredentials: true,
         }
       );
@@ -76,7 +69,7 @@ const Correct = () => {
               Grammar Correction
             </Typography>
             <Typography variant="body1" className="text-center mb-4">
-            Remaining Credits: {credits.remaining}
+              Remaining Credits: {credits.remaining}
             </Typography>
             <TextField
               label="Enter text to correct"
@@ -92,7 +85,7 @@ const Correct = () => {
               variant="contained"
               color="primary"
               onClick={handleCorrect}
-              disabled={loading}
+              disabled={loading || credits.remaining <= 0} // Disable if no credits left
               className="w-full"
             >
               {loading ? 'Correcting...' : 'Correct Text'}

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import Navbar from './navbar';
+import Navbar from './Navbar';
 import { Typography } from '@mui/material';
+import { AuthContext } from '../authContext/authContext';
 
 const SimpleContent = () => {
   const [heading, setHeading] = useState('');
@@ -12,16 +13,12 @@ const SimpleContent = () => {
   const [showResult, setShowResult] = useState(false);
   const [remainingCredits, setRemainingCredits] = useState(0);
 
+  const { isAuthenticated } = useContext(AuthContext);
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/users/profile`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
+        const response = await axios.get('http://localhost:8090/api/users/profile', {
           withCredentials: true,
         });
         setRemainingCredits(response.data.credits);
@@ -30,8 +27,10 @@ const SimpleContent = () => {
       }
     };
 
-    fetchProfile();
-  }, []);
+    if (isAuthenticated) {
+      fetchProfile();
+    }
+  }, [isAuthenticated]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,16 +40,10 @@ const SimpleContent = () => {
     setShowResult(false);
 
     try {
-      const token = localStorage.getItem('token');
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/users/gemini`,
+        'http://localhost:8090/api/users/gemini',
         { heading, tone },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
           withCredentials: true,
         }
       );
@@ -108,7 +101,7 @@ const SimpleContent = () => {
             <button
               type="submit"
               className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              disabled={loading}
+              disabled={loading || remainingCredits <= 0} // Disable if no credits left
             >
               {loading ? 'Generating...' : 'Generate'}
             </button>
