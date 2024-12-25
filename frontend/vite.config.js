@@ -18,7 +18,6 @@ export default defineConfig({
           vendor: ['react', 'react-dom', 'axios', 'framer-motion', '@mui/material', '@chakra-ui/react'],
         },
       },
-      sourcemap: true,
     },
   },
 });

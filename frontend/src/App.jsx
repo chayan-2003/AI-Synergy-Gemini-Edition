@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Register from './components/register';
 import Login from './components/login';
-import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Dashboard from './components/Dashboard';
 import Pricing from './components/pricing';
@@ -23,7 +22,6 @@ function App() {
             <Route path='/' element={<Home />} />
             <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login />} />
-            <Route path='/navbar' element={<Navbar />} />
             <Route path='/dashboard' element={<PrivateRoute><Dashboard /></PrivateRoute>} />
             <Route path='/pricing' element={<PrivateRoute><Pricing /></PrivateRoute>} />
             <Route path='/cont1' element={<PrivateRoute><SimpleContent /></PrivateRoute>} />
