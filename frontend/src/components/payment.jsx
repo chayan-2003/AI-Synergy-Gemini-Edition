@@ -39,7 +39,7 @@ const CheckoutForm = ({ plan }) => {
     const API_URL = import.meta.env.PROD ? import.meta.env.VITE_API_URL_PROD : import.meta.env.VITE_API_URL_DEV;
     try {
       const { data } = await axios.post(
-        `${API_URL}/api/users/payment1`,
+        `${API_URL}/api/users/payment`,
         {
           amount: plan === 'basic' ? 2900 : plan === 'pro' ? 5900 : 9900, // Convert dollars to cents
           plan,
