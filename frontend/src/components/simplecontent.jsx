@@ -4,7 +4,7 @@ import Navbar from './Navbar';
 import { Typography } from '@mui/material';
 import { AuthContext } from '../authContext/authContext';
 
-const SimpleContent = () => {
+ export const SimpleContent = () => {
   const [heading, setHeading] = useState('');
   const [tone, setTone] = useState('');
   const [output, setOutput] = useState('');
@@ -136,4 +136,3 @@ const SimpleContent = () => {
   );
 };
 
-export default SimpleContent;

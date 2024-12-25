@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../authContext/authContext';
 
-const Login = () => {
+ export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate(); // Initialize navigate
@@ -80,4 +80,3 @@ const Login = () => {
   );
 };
 
-export {Login};

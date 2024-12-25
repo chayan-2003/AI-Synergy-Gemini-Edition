@@ -5,7 +5,7 @@ import Register from './components/Register';
 import Home from './components/Home';
 import Dashboard from './components/Dashboard';
 import Pricing from './components/Pricing';
-import SimpleContent from './components/SimpleContent';
+import {SimpleContent} from './components/SimpleContent';
 import Payment from './components/Payment';
 import { PlanProvider } from './context/PlanContext';
 import Summarizer from './components/Summarizer';
