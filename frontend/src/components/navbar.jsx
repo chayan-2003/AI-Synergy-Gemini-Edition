@@ -12,7 +12,6 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import axios from 'axios';
 import { AuthContext } from '../authContext/authContext';
-
 const Navbar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const navigate = useNavigate();
