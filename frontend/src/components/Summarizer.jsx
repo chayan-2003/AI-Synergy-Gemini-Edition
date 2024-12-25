@@ -14,10 +14,12 @@ const Summarizer = () => {
 
   const { isAuthenticated } = useContext(AuthContext);
 
+  const API_URL = import.meta.env.PROD ? import.meta.env.VITE_API_URL_PROD : import.meta.env.VITE_API_URL_DEV;
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get( `${API_URL}/api/users/profile`, {
+        const response = await axios.get(`${API_URL}/api/users/profile`, {
           withCredentials: true,
         });
         setRemainingCredits(response.data.credits);
@@ -29,7 +31,7 @@ const Summarizer = () => {
     if (isAuthenticated) {
       fetchProfile();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, API_URL]);
 
   const handleSummarize = async () => {
     setLoading(true);
