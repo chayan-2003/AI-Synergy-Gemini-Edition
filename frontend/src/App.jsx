@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
-import Register from './components/register';
-import Login from './components/login';
+import Register from './components/Register';
+import Login from './components/Login';
 import Home from './components/Home';
 import Dashboard from './components/Dashboard';
-import Pricing from './components/pricing';
-import SimpleContent from './components/simplecontent';
-import Payment from './components/payment';
+import Pricing from './components/Pricing';
+import SimpleContent from './components/SimpleContent';
+import Payment from './components/Payment';
 import { PlanProvider } from './context/PlanContext';
 import Summarizer from './components/Summarizer';
 import Correct from './components/Correct';
