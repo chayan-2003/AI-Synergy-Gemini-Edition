@@ -12,10 +12,11 @@ const app = express();
 // CORS Configuration
 const allowedOrigins = [
     'https://inspire-text-frontend.vercel.app',
-    'https://inspire-text-frontend-edop7h3yl-chayan-2003s-projects.vercel.app'
+    'https://inspire-text-frontend-edop7h3yl-chayan-2003s-projects.vercel.app',
+    'http://localhost:5175'
 ];
 
-const corsOptions = {
+const corsOptions = { 
     origin: (origin, callback) => {
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
