@@ -1,17 +1,17 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
-import {Login} from './components/Login';
-import Register from './components/Register';
-import Home from './components/Home';
-import Dashboard from './components/Dashboard';
-import Pricing from './components/Pricing';
-import {SimpleContent} from './components/SimpleContent';
-import Payment from './components/Payment';
-import { PlanProvider } from './context/PlanContext';
-import Summarizer from './components/Summarizer';
-import Correct from './components/Correct';
-import { AuthProvider } from './authContext/authContext';
-import PrivateRoute from './components/PrivateRoute';
+import {Login} from './Login';
+import Register from './Register';
+import Home from './Home';
+import Dashboard from './Dashboard';
+import Pricing from './Pricing';
+import {SimpleContent} from './SimpleContent';
+import Payment from './Payment';
+import { PlanProvider } from '../context/PlanContext';
+import Summarizer from './Summarizer';
+import Correct from './Correct';
+import { AuthProvider } from '../authContext/authContext';
+import PrivateRoute from './PrivateRoute';
 
 function App() {
   return (
