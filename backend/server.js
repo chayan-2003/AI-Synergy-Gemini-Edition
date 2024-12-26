@@ -16,17 +16,7 @@ const allowedOrigins = [
 ];
 
 const corsOptions = {
-<<<<<<< HEAD
-    origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error(`Origin not allowed by CORS: ${origin}`));
-        }
-    },
-=======
     origin:'https://inspire-text-frontend.vercel.app',
->>>>>>> 417181a (updated)
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: [
