@@ -10,8 +10,19 @@ dotenv.config();
 const app = express();
 
 // CORS Configuration
+const allowedOrigins = [
+    'https://inspire-text-frontend.vercel.app',
+    'https://inspire-text-frontend-edop7h3yl-chayan-2003s-projects.vercel.app'
+];
+
 const corsOptions = {
-    origin:'https://inspire-text-frontend.vercel.app',
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error(`Origin not allowed by CORS: ${origin}`));
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: [
@@ -27,27 +38,34 @@ const corsOptions = {
 
 // Apply CORS Middleware
 app.use(cors(corsOptions));
+
+// Error handler for CORS
 app.use((err, req, res, next) => {
-    if (err.name === 'CORSError') {
-        res.status(403).json({
-            message: 'CORS error: ' + err.message
-        });
+    if (err.message.includes('Origin not allowed by CORS')) {
+        res.status(403).json({ message: err.message });
     } else {
         next(err);
     }
 });
 
+// Connect to Database
 connectDB();
 
+// Serve Static Files
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
-app.use(express.json()); // Parse incoming JSON data
-app.use(cookieParser()); // Parse incoming cookies
-app.options('*', cors(corsOptions)); // Allow preflight requests for all routes
 
+// Middleware for parsing JSON and cookies
+app.use(express.json());
+app.use(cookieParser());
+
+// Handle Preflight Requests for All Routes
+app.options('*', cors(corsOptions));
+
+// Routes
 app.use('/api/users', userRouter);
 
-
+// Start Server
 const port = process.env.PORT || 8090;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
