@@ -11,7 +11,7 @@ const app = express();
 
 // CORS Configuration
 const corsOptions = {
-    origin: process.env.NODE_ENV === 'production' ? 'https://inspire-text-frontend.vercel.app' : 'http://localhost:5175',
+    origin:'https://inspire-text-frontend.vercel.app',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: [
