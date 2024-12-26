@@ -46,16 +46,12 @@ app.use((err, req, res, next) => {
 // Connect to Database
 connectDB();
 
-// Serve Static Files
-const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
 // Middleware for parsing JSON and cookies
 app.use(express.json());
 app.use(cookieParser());
 
-// Handle Preflight Requests for All Routes
-app.options('*', cors(corsOptions));
+
 
 // Routes
 app.use('/api/users', userRouter);
