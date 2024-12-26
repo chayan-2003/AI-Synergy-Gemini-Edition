@@ -43,6 +43,8 @@ const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 app.use(express.json()); // Parse incoming JSON data
 app.use(cookieParser()); // Parse incoming cookies
+app.options('*', cors(corsOptions)); // Allow preflight requests for all routes
+
 app.use('/api/users', userRouter);
 
 
