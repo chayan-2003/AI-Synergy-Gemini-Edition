@@ -11,8 +11,9 @@ const app = express();
 
 // CORS Configuration
 const allowedOrigins = [
-    'https://inspire-text-frontend.vercel.app',
-    'https://inspire-text-frontend-edop7h3yl-chayan-2003s-projects.vercel.app',
+    'https://inspire-text-frontend-9gu8.vercel.app',
+  'https://inspire-text-frontend-9gu8-jscftxhtv-chayan-2003s-projects.vercel.app',
+
     'http://localhost:5175'
 ];
 
